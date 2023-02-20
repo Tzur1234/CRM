@@ -1,0 +1,15 @@
+{% extends 'leads/base.html' %} 
+{% block content %}
+<a href="{% url 'leads:leads' %}">Go back to leads</a>
+<h1>Lead Detail</h1>
+<ul>
+  <div class="lead">
+    <li>First_name: {{lead.first_name}}</li>
+    <li>Last_name: {{lead.last_name}}</li>
+    <li>Age: {{lead.age}}</li>
+  </div>
+  <br />
+  <hr />
+</ul>
+
+{% endblock %}
