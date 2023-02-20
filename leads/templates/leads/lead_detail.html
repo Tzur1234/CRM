@@ -1,15 +1,40 @@
 {% extends 'leads/base.html' %} 
 {% block content %}
-<a href="{% url 'leads:leads' %}">Go back to leads</a>
 <h1>Lead Detail</h1>
-<ul>
-  <div class="lead">
-    <li>First_name: {{lead.first_name}}</li>
-    <li>Last_name: {{lead.last_name}}</li>
-    <li>Age: {{lead.age}}</li>
+
+<div class="container">
+  <section class="mx-auto my-5" style="max-width: 23rem">
+      <div class="card testimonial-card mt-2 mb-3">
+      <div class="card-up aqua-gradient"></div>
+      <div class="avatar mx-auto white">
+          <img
+          src="{{lead.image.url}}"
+          class="rounded-circle img-fluid"
+          alt="woman avatar" />
+         
+      </div>
+      <div class="card-body text-center">
+          <a href="{% url 'leads:lead_detail' pk=lead.id %}">
+          <h4 class="card-title font-weight-bold">
+              {{lead.first_name}} {{lead.last_name}}
+          </h4>
+          </a>
+          <hr>
+
+          <a
+          class="btn btn-primary mt-2"
+          href="{% url 'leads:lead_update' pk=lead.id %}"
+          >Update</a
+          >
+          <a
+          class="btn btn-secondary mt-2"
+          href="{% url 'leads:lead_delete' pk=lead.id %}"
+          >Delete</a
+          >
+      </div>
+      </div>
+  </section>
   </div>
-  <br />
-  <hr />
 </ul>
 
 {% endblock %}
