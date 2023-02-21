@@ -1,0 +1,14 @@
+{% extends 'leads/base.html' %}
+
+{% load static %}
+{% block static %}{% endblock static %}
+
+
+{% block content %}
+    <h1>SignUp</h1><hr>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit">
+    </form>
+{% endblock content %}

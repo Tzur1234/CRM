@@ -3,8 +3,20 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from .models import Lead, Agent, User
-from .forms import LeadModelForm
+from .forms import LeadModelForm, UserCreationFormCustom
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+
+
+
+class SignupView(CreateView):
+    template_name = 'registration/signup.html'
+    form_class = UserCreationFormCustom
+
+    def get_success_url(self):
+        return reverse('login')
+
+
+
 
 def landing_page(request):
     return render(request, 'leads/landing_page.html')
@@ -17,7 +29,6 @@ class ListPageView(ListView):
     template_name = 'leads/lead_list.html'
     model = Lead
     context_object_name = 'leads'
-
 
 
 def lead_list(request):

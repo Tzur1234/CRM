@@ -9,7 +9,8 @@
       <div class="avatar mx-auto white">
           <img
           src="{{lead.image.url}}"
-            class="rounded-circle img-fluid"
+          class="img-fluid rounded-circle border border-dark border-1 m-3"
+          style="width: 90px;"
           alt="woman avatar" />
          
       </div>
@@ -21,6 +22,16 @@
           </a>
           <hr>
 
+          <h5>Phone</h5>
+          <p> {{lead.phone}} </p>
+          
+          <h5>Email</h5>
+          <p> {{lead.email}} </p>
+
+          <h5>Age</h5>
+          <p>-{{lead.age}}-</p>
+
+      
           <a
           class="btn btn-primary mt-2"
           href="{% url 'leads:lead_update' pk=lead.id %}"
