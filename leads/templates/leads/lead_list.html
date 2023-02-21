@@ -23,17 +23,19 @@
         </h4>
       </a>
       <hr />
-
-      <a
-        class="btn btn-primary mt-2"
+      <div class="d-flex justify-content-around">
+        <a
+        class="btn btn-primary mt-2 w-20"
         href="{% url 'leads:lead_update' pk=lead.id %}"
         >Update</a
       >
       <a
-        class="btn btn-secondary mt-2"
+        class="btn btn-secondary mt-2 w-20"
         href="{% url 'leads:lead_delete' pk=lead.id %}"
         >Delete</a
       >
+      </div>
+      
     </div>
   </div>
 </section>

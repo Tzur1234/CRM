@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from .models import Lead, Agent, User
 from .forms import LeadModelForm
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 def landing_page(request):
     return render(request, 'leads/landing_page.html')
@@ -31,12 +31,6 @@ class LeadDetail(DetailView):
     template_name = 'leads/lead_detail.html'
     model = Lead
 
-    # # Retrieve a specific object
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['lead'] = Lead.objects.get(pk=kwargs['pk'])
-    #     return context
-
 
 def lead_detail(request, pk):
     lead = Lead.objects.get(id=pk)
@@ -46,20 +40,14 @@ def lead_detail(request, pk):
     }
     return render(request,'leads/lead_detail.html', context)
 
-# def create(request):
-#     form = LeadForm()
-#     if request.method == 'POST':
-#         form = LeadForm(request.POST)
-#         if form.is_valid():
-#             first = form.cleaned_data['first_name']
-#             last = form.cleaned_data['last_name']
-#             age = form.cleaned_data['age']
-#             agent = Agent.objects.first()
-#             Lead.objects.create(first_name=first, last_name=last, age=age, agent=agent)
 
-#             return redirect(reverse('leads:leads'))
-        
-    # return render(request, 'leads/lead_create.html', {'form':form})
+class CreatLeadView(CreateView):
+    template_name = 'leads/lead_create.html'
+    model = Lead
+    fields = ['first_name','last_name','age','phone','agent', 'email', 'image'] 
+
+    def get_success_url(self):
+        return reverse('leads:leads')
 
 
 def create(request):
@@ -73,6 +61,27 @@ def create(request):
   
     return render(request, 'leads/lead_create.html', {'form':form})
 
+class UpdateLead(UpdateView):
+    model = Lead
+    fields = '__all__'
+    # form_class = LeadModelForm
+    template_name = 'leads/lead_update.html'
+
+    def get_success_url(self):
+        return reverse('leads:leads')
+
+# class UpdateLead(UpdateView):
+#     # model = Lead
+#     # fields = '__all__'
+#     form_class = LeadModelForm
+#     template_name = 'leads/lead_update.html'
+#     def get_queryset(self):
+#         return Lead.objects.all()
+#         # return super().get_queryset()     
+#     def get_success_url(self):
+#         return reverse('leads:leads')
+
+
 def update(request, pk):
     lead = Lead.objects.get(id=pk)
     form = LeadModelForm(instance=lead)
@@ -81,12 +90,20 @@ def update(request, pk):
         if form.is_valid():
             # update the exsiting model
             form.save()
-            return redirect(reverse('leads:lead_detail', args=[pk]))   
+            # return redirect(reverse('leads:lead_detail', args=[pk]))   
+            return redirect(reverse('leads:leads'))   
     context = {
         'lead':lead,
         'form':form
     }
     return render(request, 'leads/lead_update.html', context)
+
+class DeleteLead(DeleteView):
+     # specify the model you want to use
+    model = Lead   
+    # url to redirect after successfully
+    def get_success_url(self):
+        return reverse('leads:leads')    
 
 
 def delete(request, pk):

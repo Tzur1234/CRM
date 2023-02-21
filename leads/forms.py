@@ -5,7 +5,9 @@ from .models import Lead
 class LeadModelForm(forms.ModelForm):
     class Meta:
         model = Lead
-        fields = ['first_name','last_name','age','phone','agent','image', 'email']
+        fields = '__all__'
+
+
 
 
 

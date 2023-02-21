@@ -120,7 +120,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
+# The name of the folder to store the static files in deploy
 STATIC_ROOT = "static_root"
+
+
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = 'media'

@@ -13,8 +13,9 @@ class Lead(models.Model):
     age = models.IntegerField(default=0)
     phone = models.IntegerField(default=0)
     agent = models.ForeignKey("Agent", on_delete=models.CASCADE)
-    image = models.ImageField(null=True, blank=True)
     email = models.EmailField(max_length=254, null=True, blank=True)
+    image = models.ImageField(null=True, blank=False)
+    
 
     def __str__(self):
         return self.first_name

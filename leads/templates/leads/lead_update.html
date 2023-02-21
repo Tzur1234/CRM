@@ -1,12 +1,14 @@
-{% extends 'leads/base.html' %} {% load static %} {% block static %}
+{% extends 'leads/base.html' %} 
+{% load static %}
+{% block static %}
 <link rel="stylesheet" href="{% static 'update.css'%}" />
 {% endblock static %} 
 
 {% block content %}
 <h1>Lead Update</h1>
-<section class="vh-400" style="background-color: #f4f5f7">
-    
-<form action="." method="post" enctype="multipart/form-data">
+
+{% comment %} <form action="." method="post" enctype="multipart/form-data">
+  <section class="vh-400" style="background-color: #f4f5f7">
     {% csrf_token %} 
     <div class="card mb-3" style="border-radius: 0.5rem">
       <div class="row g-0">
@@ -15,18 +17,18 @@
           style="
             border-top-left-radius: 0.5rem;
             border-bottom-left-radius: 0.5rem;
-          "
-        >
-
+          ">
           <img
             src="{{lead.image.url}}"
             alt="Avatar"
             class="img-fluid my-5"
             style="width: 300px"
           />
+          <div class="fieldWrapper">
+            {{ form.first_name.errors }}{{ form.last_name.errors }}
+            <h5>{{ form.first_name }} {{ form.last_name }}</h5>
+          </div>
           
-          {{ form.first_name.errors }}{{ form.last_name.errors }}
-          <h5>{{ form.first_name }} {{ form.last_name }}</h5>
           <p>Web Designer</p>
           <i class="far fa-edit mb-5"></i>
         </div>
@@ -37,13 +39,19 @@
             <div class="row pt-1">
               <div class="col-6 mb-3">
                 <h6>Email</h6>
-                <p>{{ form.email.errors }}</p>
-                <p class="text-muted">{{form.email}}</p>
+                <div class="fieldWrapper">
+                  <p>{{ form.email.errors }}</p>
+                  <p class="text-muted">{{form.email}}</p>
+                </div>
+                
               </div>
               <div class="col-6 mb-3">
                 <h6>Phone</h6>
-                {{ form.phone.errors }}
-                <p class="text-muted">{{ form.email}}</p>
+                <div class="fieldWrapper">
+                  {{ form.phone.errors }}
+                  <p class="text-muted">{{ form.phone}}</p>
+                </div>
+                
               </div>
             </div>
             <h6>Details</h6>
@@ -51,8 +59,10 @@
             <div class="row pt-1">
               <div class="col-6 mb-3">
                 <h6>Update Image</h6>
-                {{ form.image }}
-                {{ form.image.errors }}
+                <div class="fieldWrapper">
+                  {{ form.image }}
+                  {{ form.image.errors }}
+                </div>         
               </div>
               <div class="col-6 mb-3">
                 <h6>Most Viewed</h6>
@@ -65,9 +75,15 @@
               <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
             </div>
           </div>
-    <input type="submit" />
-  </form>
+          <input type="submit" />
+        </section>
+  </form> {% endcomment %}
   
-</section>
+  <form action="." method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit">
+  </form>
 
-{% endblock %}
+
+  {% endblock %}
