@@ -6,9 +6,10 @@ from .models import Lead, Agent, User
 from .forms import LeadModelForm, UserCreationFormCustom
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class SignupView(CreateView):
+ 
+class SignupView(LoginRequiredMixin, CreateView):
     template_name = 'registration/signup.html'
     form_class = UserCreationFormCustom
 
@@ -16,16 +17,14 @@ class SignupView(CreateView):
         return reverse('login')
 
 
-
-
 def landing_page(request):
     return render(request, 'leads/landing_page.html')
 
-class LandingPageView(TemplateView):
+class LandingPageView(LoginRequiredMixin, TemplateView):
     template_name = 'leads/landing_page.html'
 
 
-class ListPageView(ListView):
+class ListPageView(LoginRequiredMixin, ListView):
     template_name = 'leads/lead_list.html'
     model = Lead
     context_object_name = 'leads'
@@ -39,7 +38,7 @@ def lead_list(request):
     return render(request,'leads/lead_list.html', context)
 
 
-class LeadDetail(DetailView):
+class LeadDetail(LoginRequiredMixin, DetailView):
     template_name = 'leads/lead_detail.html'
     model = Lead
 
@@ -53,7 +52,7 @@ def lead_detail(request, pk):
     return render(request,'leads/lead_detail.html', context)
 
 
-class CreatLeadView(CreateView):
+class CreatLeadView(LoginRequiredMixin, CreateView):
     template_name = 'leads/lead_create.html'
     model = Lead
     fields = ['first_name','last_name','age','phone','agent', 'email', 'image'] 
@@ -84,7 +83,7 @@ def create(request):
   
     return render(request, 'leads/lead_create.html', {'form':form})
 
-class UpdateLead(UpdateView):
+class UpdateLead(LoginRequiredMixin, UpdateView):
     model = Lead
     fields = '__all__'
     # form_class = LeadModelForm
