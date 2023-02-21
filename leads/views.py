@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
@@ -45,6 +46,17 @@ class CreatLeadView(CreateView):
     template_name = 'leads/lead_create.html'
     model = Lead
     fields = ['first_name','last_name','age','phone','agent', 'email', 'image'] 
+
+    def form_valid(self, form):
+        # Send EMAIL
+        send_mail(
+        'Subject here',
+        'Here is the message.',
+        'from@example.com',
+        ['to@example.com']
+    )
+
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('leads:leads')
