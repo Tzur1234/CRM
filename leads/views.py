@@ -2,12 +2,12 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
-from .models import Lead, Agent, User
+from .models import Lead, Agent, User, UserProfile
 from .forms import LeadModelForm, UserCreationFormCustom
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.db.models.signals import post_save, pre_save
  
 class SignupView(LoginRequiredMixin, CreateView):
     template_name = 'registration/signup.html'
@@ -133,8 +133,12 @@ def delete(request, pk):
     lead.delete()
     return redirect(reverse('leads:leads'))
 
+def post_user_created_signal(sender, instance, created, **kwargs):
+    # If created new User and not Update
+    if created:
+        UserProfile.objects.create(user=instance)
 
-
+post_save.connect(post_user_created_signal, sender=User)
 
 
 

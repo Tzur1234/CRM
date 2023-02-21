@@ -5,7 +5,7 @@ class User(AbstractUser):
     age = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.email
+        return self.username
 
 
 class UserProfile(models.Model):
