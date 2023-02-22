@@ -2,14 +2,14 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    age = models.IntegerField(default=0)
+    pass
 
     def __str__(self):
         return self.username
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
     
     def __str__(self):
         return self.user.username
@@ -29,7 +29,7 @@ class Lead(models.Model):
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+    organization = models.ForeignKey('UserProfile', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.user.email

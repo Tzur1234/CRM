@@ -9,7 +9,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.signals import post_save, pre_save
  
-class SignupView(LoginRequiredMixin, CreateView):
+class SignupView(CreateView):
     template_name = 'registration/signup.html'
     form_class = UserCreationFormCustom
 
