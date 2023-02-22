@@ -1,21 +1,21 @@
-{% extends 'leads/base.html' %} {% load static %} {% block static %}
+{% extends 'leads/base.html' %} 
+{% load static %}
+ {% block static %}
 <link rel="stylesheet" href="{% static 'card.css' %}" />
-{% endblock static %} {% block content %}
+{% endblock static %}
+
+{% block content %}
 <div class="d-flex justify-content-between">
-  <h1 class="d-flex justify-content-center">This is all of our agents</h1>
+  <h1 class="d-flex justify-content-center">Agent Detail</h1>
 
   <a
-    href="{% url 'agents:create-agent' %}"
+    href="{% url 'agents:agent-list' %}"
     type="button"
     class="m-3 btn btn-primary"
-    >Create Agent</a
+    >Back to agents list</a
   >
 </div>
-
 <hr />
-
-{% for agent in agents %}
-
 <section class="mx-auto my-2" style="max-width: 21rem">
   <div class="card testimonial-card mt-2 mb-3">
     <div class="card-up aqua-gradient"></div>
@@ -27,15 +27,11 @@
       />
     </div>
     <div class="card-body text-center">
-      {% comment %}
-      <a href="{% url 'leads:lead_detail' pk=lead.id %}">
-        {% endcomment %}
         <h4 class="card-title font-weight-bold">{{agent.user.username}}</h4>
       </a>
       <hr />
       <div class="d-flex justify-content-around">
         <a class="btn btn-primary mt-2 w-20" href="{% url 'agents:agent-update' pk=agent.id %}">Update</a>
-        <a href="{% url 'agents:agent-detail' pk=agent.id %}" class="btn btn-secondary mt-2 w-20">Detial</a>
         <a
           class="btn btn-secondary mt-2 w-20"
           href="{% url 'agents:delete-agent' pk=agent.id %}"
@@ -47,4 +43,4 @@
   </div>
 </section>
 
-{% endfor %} {% endblock %}
+{% endblock %}

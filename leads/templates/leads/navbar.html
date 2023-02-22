@@ -33,14 +33,14 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'landing_page' %}">Home</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'leads:lead_create' %}">Create Lead</a>
-          </li>
+        
+        {% if request.user.is_authenticated %}
         <li class="nav-item ">
           <a class="nav-link activates" aria-current="page" href="{% url 'leads:leads' %}">Leads</a>
         </li>
-
-        {% if request.user.is_authenticated %}
+        <li class="nav-item ">
+          <a class="nav-link activates" aria-current="page" href="{% url 'agents:agent-list' %}">Agents</a>
+        </li>
         <li class="nav-item ">
           <a class="nav-link activate" aria-current="page" href="{% url 'logout' %}">Logout</a>
         </li>

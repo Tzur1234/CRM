@@ -32,7 +32,7 @@ class Agent(models.Model):
     organization = models.ForeignKey('UserProfile', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
 
  
 
