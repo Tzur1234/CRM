@@ -21,11 +21,12 @@ class Lead(models.Model):
     email = models.EmailField(max_length=254, null=True, blank=True)
     image = models.ImageField(null=True, blank=False)
     
-    agent = models.ForeignKey("Agent", on_delete=models.CASCADE)
+    organization = models.ForeignKey('UserProfile', on_delete=models.CASCADE, null=True)
+    agent = models.ForeignKey("Agent",null=True, blank=True, on_delete=models.SET_NULL)
     
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name} | Agent: {self.agent}"
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -40,6 +41,13 @@ def post_user_created_signal(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
 
 post_save.connect(post_user_created_signal, sender=User)
+ 
+
+# def set_lead_organization(sender, instance, created, **kwargs):
+#     if created:
+#         instance.organization = self.request.user.userprofile
+
+# post_save.connect(set_lead_organization, sender=Lead)
  
 
 

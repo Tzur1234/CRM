@@ -7,15 +7,17 @@ class LeadModelForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = '__all__'
+        exclude = ['organization']
 
 
 
 
 
-class LeadForm(forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    age = forms.IntegerField()
+
+class LeadForm(forms.ModelForm):
+    class Meta:
+        model = Lead
+        exclude = ['organization']
 
 class UserCreationFormCustom(UserCreationForm):
     class Meta:
