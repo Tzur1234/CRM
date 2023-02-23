@@ -35,29 +35,30 @@
         </li>
         
         {% if request.user.is_authenticated %}
-        <li class="nav-item ">
-          <a class="nav-link activates" aria-current="page" href="{% url 'leads:leads' %}">Leads</a>
-        </li>
 
-        <li class="nav-item ">
-          <a class="nav-link activates" aria-current="page" href="{% url 'agents:agent-list' %}">Agents</a>
-        </li>
+          {% if request.user.is_organisor %}
+              <li class="nav-item ">
+                <a class="nav-link activates" aria-current="page" href="{% url 'agents:agent-list' %}">Agents</a>
+              </li>
+          {% endif %}
 
-    
-        <li class="nav-item ">
-          <a class="nav-link activate" aria-current="page" href="{% url 'logout' %}">Logout</a>
-        </li>
-        <li class="nav-item p-2" style="color:white">
-          You are login as : {{request.user.username}}        
-        </li>
+            <li class="nav-item ">
+              <a class="nav-link activates" aria-current="page" href="{% url 'leads:leads' %}">Leads</a>
+            </li>
+          
+            <li class="nav-item ">
+              <a class="nav-link activate" aria-current="page" href="{% url 'logout' %}">Logout</a>
+            </li>
+            <li class="nav-item p-2" style="color:white">
+              You are login as : {{request.user.username}}        
+            </li>
         {% else %}
-          <li class="nav-item ">
-            <a class="nav-link activate" aria-current="page" href="{% url 'login' %}">Login</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link activate" aria-current="page" href="{% url 'signup' %}" >Register</a>
-          </li>
-
+            <li class="nav-item ">
+              <a class="nav-link activate" aria-current="page" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link activate" aria-current="page" href="{% url 'signup' %}" >Register</a>
+            </li>
         {% endif %}
 
         
