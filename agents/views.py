@@ -3,10 +3,11 @@ from django.urls import reverse_lazy
 
 from django.views.generic import ListView, CreateView, DeleteView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import OrganisorAndLoginRequiredMixin
 from .forms import AgentModelForm
 from leads.models import Agent
 
-class AgentListView(LoginRequiredMixin, ListView):
+class AgentListView(OrganisorAndLoginRequiredMixin, ListView):
     template_name = 'agents/agents_list.html'
     context_object_name = 'agents'
 
@@ -15,7 +16,7 @@ class AgentListView(LoginRequiredMixin, ListView):
         organization = self.request.user.userprofile
         return Agent.objects.filter(organization=organization)
 
-class CreateAgentView(CreateView):
+class CreateAgentView(OrganisorAndLoginRequiredMixin,CreateView):
     template_name = 'agents/agent_create.html'
     form_class = AgentModelForm
 
@@ -31,7 +32,7 @@ class CreateAgentView(CreateView):
 
     
 
-class DeleteAgentView(LoginRequiredMixin, DeleteView):
+class DeleteAgentView(OrganisorAndLoginRequiredMixin, DeleteView):
     template_name="agents/agent_confirm_delete.html"
     context_object_name = 'agent'
 
@@ -44,7 +45,7 @@ class DeleteAgentView(LoginRequiredMixin, DeleteView):
         return reverse('agents:agent-list')
 
 
-class DetailAgentView(LoginRequiredMixin, DetailView):
+class DetailAgentView(OrganisorAndLoginRequiredMixin, DetailView):
 
     template_name = 'agents/agent_detail.html'
     context_object_name = 'agent'
@@ -54,7 +55,7 @@ class DetailAgentView(LoginRequiredMixin, DetailView):
         organization = self.request.user.userprofile
         return Agent.objects.filter(organization=organization)
 
-class UpdateAgentView(LoginRequiredMixin, UpdateView):
+class UpdateAgentView(OrganisorAndLoginRequiredMixin, UpdateView):
     template_name = 'agents/agent_update.html'
     form_class = AgentModelForm
 

@@ -8,8 +8,10 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.signals import post_save, pre_save
+
+from agents.mixins import OrganisorAndLoginRequiredMixin
  
-class SignupView(CreateView):
+class SignupView(LoginRequiredMixin, CreateView):
     template_name = 'registration/signup.html'
     form_class = UserCreationFormCustom
 
@@ -52,7 +54,7 @@ def lead_detail(request, pk):
     return render(request,'leads/lead_detail.html', context)
 
 
-class CreatLeadView(LoginRequiredMixin, CreateView):
+class CreatLeadView(OrganisorAndLoginRequiredMixin, CreateView):
     template_name = 'leads/lead_create.html'
     model = Lead
     fields = ['first_name','last_name','age','phone','agent', 'email', 'image'] 
@@ -83,7 +85,7 @@ def create(request):
   
     return render(request, 'leads/lead_create.html', {'form':form})
 
-class UpdateLead(LoginRequiredMixin, UpdateView):
+class UpdateLead(OrganisorAndLoginRequiredMixin, UpdateView):
     model = Lead
     fields = '__all__'
     # form_class = LeadModelForm
@@ -120,7 +122,7 @@ def update(request, pk):
     }
     return render(request, 'leads/lead_update.html', context)
 
-class DeleteLead(DeleteView):
+class DeleteLead(OrganisorAndLoginRequiredMixin,DeleteView):
      # specify the model you want to use
     model = Lead   
     # url to redirect after successfully

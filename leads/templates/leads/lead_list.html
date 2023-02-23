@@ -3,14 +3,16 @@
 {% endblock static %} {% block content %}
 <div class="d-flex justify-content-between">
   <h1 class="d-flex justify-content-center">This is all of our leads</h1>
-  <li class="nav-item">
+  
+    {% if request.user.is_organisor %}
     <a
-      class="btn btn-primary"
-      aria-current="page"
-      href="{% url 'leads:lead_create' %}"
-      >Create Lead</a
-    >
-  </li>
+    class="btn btn-primary h-50 "
+    aria-current="page"
+    href="{% url 'leads:lead_create' %}"
+    >Add Lead To My Organisation</a>
+    {% endif %}
+    
+  
 </div>
 
 <hr />
