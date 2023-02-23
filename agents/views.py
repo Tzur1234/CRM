@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, reverse
 from django.urls import reverse_lazy
 
@@ -6,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import OrganisorAndLoginRequiredMixin
 from .forms import AgentModelForm
 from leads.models import Agent
+from django.core.mail import send_mail
 
 class AgentListView(OrganisorAndLoginRequiredMixin, ListView):
     template_name = 'agents/agents_list.html'
@@ -25,13 +27,27 @@ class CreateAgentView(OrganisorAndLoginRequiredMixin,CreateView):
 
     # Overide the form valid
     def form_valid(self, form):
-        agent = form.save(commit=False)
-        agent.organization = self.request.user.userprofile
-        agent.save()
+        user = form.save(commit=False)
+        user.is_agent = True
+        user.is_organisor = False
+        user.set_password(f'{random.randit(0, 1000000)}')
+        user.save()
+        
+        # Create new agent
+        Agent.objects.create(
+            user=user,
+            organization=self.request.user.userprofile
+        )
+        # Send an emial to the agent 
+        send_mail(
+        'You are invited to be an angent',
+        'You were added as an angent to the CRM system. Please come login to start working',
+        'from@example.com',
+        [f'{user.email}'],
+        fail_silently=False,
+        )
         return super(CreateAgentView, self).form_valid(form)
-
     
-
 class DeleteAgentView(OrganisorAndLoginRequiredMixin, DeleteView):
     template_name="agents/agent_confirm_delete.html"
     context_object_name = 'agent'
@@ -43,7 +59,6 @@ class DeleteAgentView(OrganisorAndLoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('agents:agent-list')
-
 
 class DetailAgentView(OrganisorAndLoginRequiredMixin, DetailView):
 
