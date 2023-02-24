@@ -32,11 +32,23 @@ class ListPageView(LoginRequiredMixin, ListView):
     def get_queryset(self):       
         user = self.request.user
         if user.is_organisor:
-            quertset =  Lead.objects.filter(organization=user.userprofile)
+            quertset =  Lead.objects.filter(organization=user.userprofile, agent__isnull=False) 
         else:
             quertset =  Lead.objects.filter(organization=user.agent.organization)    
-            quertset = quertset.filter(agent__user=user)  
+            quertset = quertset.filter(agent__user=user,agent__isnull=False)  
         return quertset
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        queryset = Lead.objects.filter(
+                    organization=user.userprofile,
+                    agent__isnull=True
+                    )
+        context.update({'unassigned_leads':queryset})
+        return context
+    
 
 def lead_list(request):
     leads = Lead.objects.all()
@@ -72,10 +84,13 @@ class CreatLeadView(OrganisorAndLoginRequiredMixin, CreateView):
     model = Lead
     form_class = LeadModelForm
 
+    
+
     def form_valid(self, form):
         # add Organization field
-        form.organization = self.request.user.userprofile
+        # form.organization = self.request.user.userprofile
         print(form)
+        print("!!!!!!!!!!!")
 
         # Send EMAIL
         send_mail(
@@ -89,7 +104,7 @@ class CreatLeadView(OrganisorAndLoginRequiredMixin, CreateView):
 
     def get_queryset(self):       
         user = self.request.user
-        return Lead.objects.filter(organization=user.userprofile)
+        return Lead.objects.filter(organization=user.userprofile, agent__isnull=False)
         
     def get_success_url(self):
         return reverse('leads:leads')

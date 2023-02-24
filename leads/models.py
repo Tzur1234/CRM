@@ -21,7 +21,7 @@ class Lead(models.Model):
     email = models.EmailField(max_length=254, null=True, blank=True)
     image = models.ImageField(null=True, blank=False)
     
-    organization = models.ForeignKey('UserProfile', on_delete=models.CASCADE, null=True)
+    organization = models.ForeignKey('UserProfile', on_delete=models.CASCADE, null=True, blank=True)
     agent = models.ForeignKey("Agent",null=True, blank=True, on_delete=models.SET_NULL)
     
 
@@ -43,11 +43,11 @@ def post_user_created_signal(sender, instance, created, **kwargs):
 post_save.connect(post_user_created_signal, sender=User)
  
 
-# def set_lead_organization(sender, instance, created, **kwargs):
-#     if created:
-#         instance.organization = self.request.user.userprofile
+def set_lead_organization(sender, instance, created, **kwargs):
+    if created:
+        instance.organization = UserProfile.objects.first()
 
-# post_save.connect(set_lead_organization, sender=Lead)
+post_save.connect(set_lead_organization, sender=Lead)
  
 
 
