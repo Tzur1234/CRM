@@ -30,7 +30,7 @@
                               <a href="{% url 'leads:category-detail' pk=category.id %}">{{category.name}}</a>
                               
                             </th>
-                            <td>System Architect</td>
+                            <td>{{category.lead_set.count}}</td>
                         </tr>
                     {% endfor %}
                   

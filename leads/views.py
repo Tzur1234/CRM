@@ -3,7 +3,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from .models import Lead, Agent, User, UserProfile, Category
-from .forms import LeadModelForm, UserCreationFormCustom, AssignAgentForm   
+from .forms import(
+    LeadCategoryForm,
+    LeadModelForm,
+     UserCreationFormCustom,
+     AssignAgentForm)   
 
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 
@@ -189,8 +193,41 @@ class CategoryDetailView(LoginRequiredMixin, DetailView):
         context.update({
             'leads':leads
         })
-        
+
         return context
+
+class LeadCategoryUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'leads/lead_category_update.html'
+    form_class = LeadCategoryForm
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super().get_form_kwargs(**kwargs)
+
+        user = self.request.user
+        if user.is_organisor:
+            organization = user.userprofile
+        else:
+            organization = user.agent.organization
+        
+    
+        kwargs.update({"organization": organization})
+        return kwargs
+ 
+    def get_queryset(self):       
+        user = self.request.user
+        if user.is_organisor:
+            quertset =  Lead.objects.filter(organization=user.userprofile)
+        else:
+            quertset =  Lead.objects.filter(organization=user.agent.organization)    
+            quertset = queryset.filter(agent__user=user)  
+        return quertset
+
+    
+    def get_success_url(self):
+        return reverse('leads:lead_detail', args=[self.get_object().id])
+
+
+
 
 
             

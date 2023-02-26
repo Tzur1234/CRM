@@ -37,6 +37,9 @@
           <h5>Organization</h5>
           <p>-{{lead.organization}}-</p>
 
+          <h5>Category</h5>
+          <p>{{lead.category}}</p>
+
       
           <a
           class="btn btn-primary mt-2"
@@ -48,6 +51,11 @@
           href="{% url 'leads:lead_delete' pk=lead.id %}"
           >Delete</a
           >
+          
+          <a href="{% url 'leads:lead-category-update' pk=lead.id %}"
+          class="btn btn-secondary mt-2"
+          >Set Category</a>
+    
       </div>
       </div>
   </section>

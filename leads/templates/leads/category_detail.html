@@ -7,6 +7,8 @@
 <p>All the leads which are {{category.name}}</p>
 <hr />
 
+<a href="{% url 'leads:category-list' %}" class="btn btn-primary w-100 mb-4">All Categories</a>
+
 <section class="intro">
   <div class="gradient-custom-2 h-100">
     <div class="mask d-flex align-items-center h-100">
@@ -25,7 +27,9 @@
 
                     {% for lead in leads %}
                         <tr>
-                            <td>{{lead.first_name}}</td>
+                            <td>
+                              <a class="" href="{% url 'leads:lead_detail' pk=lead.id %}">{{lead.first_name}}</a>
+                            </td>
                             <td>{{lead.last_name}}</td>
                         </tr>
                     {% endfor %}
