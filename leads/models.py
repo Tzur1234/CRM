@@ -23,6 +23,7 @@ class Lead(models.Model):
     
     organization = models.ForeignKey('UserProfile', on_delete=models.CASCADE, null=True, blank=True)
     agent = models.ForeignKey("Agent",null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey('Category', blank=True, null=True, on_delete=models.SET_NULL)
     
 
     def __str__(self):
@@ -34,6 +35,15 @@ class Agent(models.Model):
 
     def __str__(self):
         return f'{self.user.username} | {self.organization}' 
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    organization = models.ForeignKey("UserProfile", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+    
 
 
 def post_user_created_signal(sender, instance, created, **kwargs):

@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
-from .models import Lead, Agent, User, UserProfile
+from .models import Lead, Agent, User, UserProfile, Category
 from .forms import LeadModelForm, UserCreationFormCustom, AssignAgentForm   
 
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
@@ -135,6 +135,32 @@ class AssignAgentView(OrganisorAndLoginRequiredMixin, FormView):
 
         return super().form_valid(form)
 
+class CategoryListView(LoginRequiredMixin, ListView):
+    template_name: 'leads/category_list.html'
+    context_object_name = "category_list"     
+    def get_queryset(self, **kwargs):
+        user = self.request.user
+
+        if user.is_organisor:
+            queryset = Category.objects.filter(organization = user.userprofile)
+        else:
+            queryset = Category.objects.filter(organization = user.agent.organization)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # get the number of leads from each category
+        user = self.request.user
+        if user.is_organisor:
+            queryset = Lead.objects.filter(organization=user.userprofile, category__isnull=True)
+        else:
+            queryset = Lead.objects.filter(organization = user.agent.organization,category__isnull=True)
+
+        context["unassigned_leads_count"] = queryset.count() 
+        return context
+    
 
 
 

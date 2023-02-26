@@ -1,0 +1,43 @@
+{% extends "leads/base.html" %} {% load static %} {% block static %}
+<link rel="stylesheet" href="{% static table.css %}" />
+{% endblock static %} {% block content %}
+<h1>Categories</h1>
+<p>This categories segment the leads</p>
+<hr />
+
+<section class="intro">
+  <div class="gradient-custom-2 h-100">
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="table-responsive">
+              <table class="table table-dark table-bordered mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Catrgory</th>
+                    <th scope="col">Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <th scope="row">Unassign</th>
+                            <td>{{unassigned_leads_count}}</td>
+                        </tr>
+                    {% for category in category_list %}
+                        <tr>
+                            <th scope="row">{{category.name}}</th>
+                            <td>System Architect</td>
+                        </tr>
+                    {% endfor %}
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
