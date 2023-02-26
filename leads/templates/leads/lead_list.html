@@ -83,6 +83,11 @@
                   >Update</a
                 >
                 <a
+                class="btn btn-primary mt-2 w-20"
+                href="{% url 'leads:assign-agent' pk=lead.id %}"
+                >Assign To Agent</a
+              >
+                <a
                   class="btn btn-secondary mt-2 w-20"
                   href="{% url 'leads:lead_delete' pk=lead.id %}"
                   >Delete</a

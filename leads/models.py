@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f' Organization follow: {self.user.username}'
+        return f' Organization follow: {self.user.username} '
 
 class Lead(models.Model):
     first_name = models.CharField(max_length=20)

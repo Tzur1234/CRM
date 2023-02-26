@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView, DeleteView, DetailView, U
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import OrganisorAndLoginRequiredMixin
 from .forms import AgentModelForm
-from leads.models import Agent
+from leads.models import Agent, User
 from django.core.mail import send_mail
 
 class AgentListView(OrganisorAndLoginRequiredMixin, ListView):
@@ -22,15 +22,13 @@ class CreateAgentView(OrganisorAndLoginRequiredMixin,CreateView):
     template_name = 'agents/agent_create.html'
     form_class = AgentModelForm
 
-    def get_success_url(self):
-        return reverse('agents:agent-list')
-
+  
     # Overide the form valid
     def form_valid(self, form):
         user = form.save(commit=False)
         user.is_agent = True
         user.is_organisor = False
-        user.set_password(f'{random.randit(0, 1000000)}')
+        user.set_password(f'{random.randint(0, 1000000)}')
         user.save()
         
         # Create new agent
@@ -38,6 +36,7 @@ class CreateAgentView(OrganisorAndLoginRequiredMixin,CreateView):
             user=user,
             organization=self.request.user.userprofile
         )
+
         # Send an emial to the agent 
         send_mail(
         'You are invited to be an angent',
@@ -47,6 +46,9 @@ class CreateAgentView(OrganisorAndLoginRequiredMixin,CreateView):
         fail_silently=False,
         )
         return super(CreateAgentView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('agents:agent-list')
     
 class DeleteAgentView(OrganisorAndLoginRequiredMixin, DeleteView):
     template_name="agents/agent_confirm_delete.html"
@@ -73,11 +75,9 @@ class DetailAgentView(OrganisorAndLoginRequiredMixin, DetailView):
 class UpdateAgentView(OrganisorAndLoginRequiredMixin, UpdateView):
     template_name = 'agents/agent_update.html'
     form_class = AgentModelForm
+    model = User
 
     def get_success_url(self):
         return reverse('agents:agent-list')
 
-    def get_queryset(self):
-        # Bring me all the Agents that ther organization is the current user organization
-        organization = self.request.user.userprofile
-        return Agent.objects.filter(organization=organization)
+    
