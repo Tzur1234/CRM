@@ -137,7 +137,8 @@ class AssignAgentView(OrganisorAndLoginRequiredMixin, FormView):
 
 class CategoryListView(LoginRequiredMixin, ListView):
     template_name: 'leads/category_list.html'
-    context_object_name = "category_list"     
+    context_object_name = "category_list"    
+
     def get_queryset(self, **kwargs):
         user = self.request.user
 
@@ -151,7 +152,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # get the number of leads from each category
+        # get the number of leads with category field == NULL
         user = self.request.user
         if user.is_organisor:
             queryset = Lead.objects.filter(organization=user.userprofile, category__isnull=True)
@@ -161,6 +162,40 @@ class CategoryListView(LoginRequiredMixin, ListView):
         context["unassigned_leads_count"] = queryset.count() 
         return context
     
+class CategoryDetailView(LoginRequiredMixin, DetailView):
+    template_name = 'leads/category_detail.html'
+    context_object_name = 'category'
+
+    def get_queryset(self, **kwargs):
+        user = self.request.user
+
+        if user.is_organisor:
+            queryset = Category.objects.filter(organization = user.userprofile)
+        else:
+            queryset = Category.objects.filter(organization = user.agent.organization)
+
+        return queryset
+
+    # Add all the leads form the selected Category
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Fetch all leads with the same Showed category
+        leads = Lead.objects.filter(category=self.get_object())
+        leads = self.get_object().lead_set.all()
+
+        print(leads)
+
+        context.update({
+            'leads':leads
+        })
+        
+        return context
+
+
+            
+
+
 
 
 

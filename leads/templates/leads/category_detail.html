@@ -1,8 +1,10 @@
 {% extends "leads/base.html" %} {% load static %} {% block static %}
 <link rel="stylesheet" href="{% static table.css %}" />
-{% endblock static %} {% block content %}
-<h1>Categories</h1>
-<p>This categories segment the leads</p>
+{% endblock static %}
+
+{% block content %}
+<h1>Category: {{category.name}}</h1>
+<p>All the leads which are {{category.name}}</p>
 <hr />
 
 <section class="intro">
@@ -15,22 +17,16 @@
               <table class="table table-dark table-bordered mb-0">
                 <thead>
                   <tr>
-                    <th scope="col">Catrgory</th>
-                    <th scope="col">Count</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
                   </tr>
                 </thead>
                 <tbody>
+
+                    {% for lead in leads %}
                         <tr>
-                            <th scope="row">Unassign</th>
-                            <td>{{unassigned_leads_count}}</td>
-                        </tr>
-                    {% for category in category_list %}
-                        <tr>
-                            <th scope="row">
-                              <a href="{% url 'leads:category-detail' pk=category.id %}">{{category.name}}</a>
-                              
-                            </th>
-                            <td>System Architect</td>
+                            <td>{{lead.first_name}}</td>
+                            <td>{{lead.last_name}}</td>
                         </tr>
                     {% endfor %}
                   
