@@ -1,4 +1,7 @@
-{% extends 'leads/base.html' %} {% block content %}
+{% extends 'leads/base.html' %} 
+{% load crispy_forms_tags %}
+
+{% block content %}
 
 <div class="d-flex justify-content-between">
     <h1>Agent Create</h1>
@@ -7,7 +10,7 @@
 <hr>
 
 <form action="." method="post">
-  {% csrf_token %} {{form.as_p}}
-  <input type="submit" />
+  {% csrf_token %} {{form | crispy}}
+  <input type="submit" class="btn btn-primary" />
 </form>
 {% endblock %}

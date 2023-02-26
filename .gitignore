@@ -103,7 +103,15 @@ env/
 venv/ 
 ENV/ 
 env.bak/ 
-venv.bak/ 
+venv.bak/
+
+.env2 
+.venv 
+env2/ 
+venv2/ 
+ENV2/ 
+env.bak/ 
+venv.bak/
 
 # mkdocs documentation 
 /site 

@@ -4,17 +4,31 @@ from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.forms.widgets import HiddenInput
 
 
+
 class LeadModelForm(forms.ModelForm):
-    # organization = forms.CharField(widget = forms.HiddenInput(), required = False, initial='Your name')
-    # first_name = forms.CharField(initial='Your name')
+    agent = forms.ModelChoiceField(queryset=Agent.objects.none())
+    organization = forms.ModelChoiceField(queryset=UserProfile.objects.none())
+    
     class Meta:
         model = Lead
         fields = '__all__'
+        # exclude = ('image',)
 
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request")
+        agents = Agent.objects.filter(organization=request.user.userprofile)
+        organization = UserProfile.objects.filter(pk=request.user.userprofile.id)
 
+        
 
-
-
+        super().__init__(*args, **kwargs)
+        self.fields["agent"].queryset = agents
+        self.fields["organization"].queryset = organization 
+        self.fields['organization'].initial = request.user.userprofile 
+        self.fields["organization"].widget = HiddenInput()
+    
+        # self.fields["category"].queryset = categories
+         
 
 class LeadForm(forms.ModelForm):
     organization = forms.ModelChoiceField(queryset=UserProfile.objects.none()) 

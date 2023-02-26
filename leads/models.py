@@ -20,6 +20,8 @@ class Lead(models.Model):
     phone = models.IntegerField(default=0)
     email = models.EmailField(max_length=254, null=True, blank=True)
     image = models.ImageField(null=True, blank=False)
+    description = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
     
     organization = models.ForeignKey('UserProfile', on_delete=models.CASCADE, null=True, blank=True)
     agent = models.ForeignKey("Agent",null=True, blank=True, on_delete=models.SET_NULL)
@@ -42,7 +44,7 @@ class Category(models.Model):
     organization = models.ForeignKey("UserProfile", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} |{self.organization}'
     
 
 

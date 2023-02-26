@@ -63,21 +63,20 @@ class LeadDetail(LoginRequiredMixin, DetailView):
             quertset = queryset.filter(agent__user=user)  
         return quertset
 
-class CreatLeadView(OrganisorAndLoginRequiredMixin, CreateView, ):
+class CreatLeadView(OrganisorAndLoginRequiredMixin, CreateView):
     template_name = 'leads/lead_create.html'
     model = Lead
     form_class = LeadModelForm
 
-    # def get_form_kwargs(self, **kwargs):
-    #     kwargs = super(CreatLeadView, self).get_form_kwargs(**kwargs)
-    #     kwargs.update({"request":self.request})
-    #     return kwargs 
-   
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super().get_form_kwargs(**kwargs)  
+        kwargs.update({"request": self.request})
+        return kwargs
+
     def form_valid(self, form):
-        # add Organization field
-        # form.organization = self.request.user.userprofile
-        print(form)
-        print("!!!!!!!!!!!")
+
+        lead = form.save(commit=False)
+        lead.save()
 
         # Send EMAIL
         send_mail(
@@ -94,9 +93,10 @@ class CreatLeadView(OrganisorAndLoginRequiredMixin, CreateView, ):
         return Lead.objects.filter(organization=user.userprofile, agent__isnull=False)
         
     def get_success_url(self):
+        # print("Success !")
         return reverse('leads:leads')
 
-class UpdateLead(OrganisorAndLoginRequiredMixin, UpdateView):
+class UpdateLead(OrganisorAndLoginRequiredMixin, UpdateView, FormView):
     model = Lead
     form_class = LeadModelForm
     template_name = 'leads/lead_update.html'
@@ -108,6 +108,11 @@ class UpdateLead(OrganisorAndLoginRequiredMixin, UpdateView):
         user = self.request.user
         return Lead.objects.filter(organization=user.userprofile)
 
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super().get_form_kwargs(**kwargs)  
+        kwargs.update({"request": self.request})
+        return kwargs
+ 
 class DeleteLead(OrganisorAndLoginRequiredMixin,DeleteView):
      # specify the model you want to use
     model = Lead   

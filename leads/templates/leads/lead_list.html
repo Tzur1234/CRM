@@ -1,4 +1,7 @@
-{% extends 'leads/base.html' %} {% load static %} {% block static %}
+{% extends 'leads/base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %} {% block static %}
 <link rel="stylesheet" href="{% static 'card.css' %}" />
 {% endblock static %} {% block content %}
 <div class="d-flex justify-content-between">
@@ -18,7 +21,6 @@
 <hr />
 
 {% for lead in leads %}
-{{lead.organization_id}}
 
 <section class="mx-auto my-2" style="max-width: 21rem">
   <div class="card testimonial-card mt-2 mb-3">
@@ -36,18 +38,23 @@
           {{lead.first_name}} {{lead.last_name}}
         </h4>
       </a>
-      <hr />
+      <hr>
       <div class="d-flex justify-content-around">
+      {% if request.user.is_organisor %}
+      
         <a
-          class="btn btn-primary mt-2 w-20"
-          href="{% url 'leads:lead_update' pk=lead.id %}"
-          >Update</a
-        >
-        <a
-          class="btn btn-secondary mt-2 w-20"
-          href="{% url 'leads:lead_delete' pk=lead.id %}"
-          >Delete</a
-        >
+            class="btn btn-primary mt-2 w-20"
+            href="{% url 'leads:lead_update' pk=lead.id %}"
+            >Update</a
+          >
+          <a
+            class="btn btn-secondary mt-2 w-20"
+            href="{% url 'leads:lead_delete' pk=lead.id %}"
+            >Delete</a
+          >
+        
+      {% endif %}
+        
       </div>
     </div>
   </div>
@@ -76,6 +83,7 @@
                 </h4>
               </a>
               <hr />
+              {% if request.user.is_organisor %}
               <div class="d-flex justify-content-around">
                 <a
                   class="btn btn-primary mt-2 w-20"
@@ -92,6 +100,7 @@
                   href="{% url 'leads:lead_delete' pk=lead.id %}"
                   >Delete</a
                 >
+              {% endif %} 
               </div>
             </div>
           </div>

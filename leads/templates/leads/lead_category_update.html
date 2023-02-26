@@ -1,10 +1,14 @@
 {% extends 'leads/base.html' %} 
+{% load crispy_forms_tags %}
 {% block content %}
 <a href="{% url 'leads:leads' %}">Go back to leads</a>
 <h1>Set Category</h1>
 <form action="." method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit">
+    <div class="mx-col-6 md-col-6 sm-col-4">
+        {% csrf_token %}
+        {{ form|crispy }} 
+        <input type="submit">
+    </div>
+    
 </form>
 {% endblock %}

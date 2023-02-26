@@ -37,9 +37,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Therd Party Apps
+    'crispy_forms',
+    "crispy_bootstrap5",
+
+    # Local app
     'leads',
     'agents'
 ]
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,4 +150,7 @@ MEDIA_ROOT = 'media'
 AUTH_USER_MODEL = 'leads.User'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = "/leads/"
+LOGOUT_REDIRECT_URL = "/login"
 LOGIN_URL = '/login'
+
+
