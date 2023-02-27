@@ -1,0 +1,16 @@
+{% extends 'leads/base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+{% block static %}{% endblock static %}
+
+
+{% block content %}
+    <h1>SignUp</h1><hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }} 
+        <input type="submit" class="btn btn-primary w-30">
+    </form>
+    
+{% endblock content %}

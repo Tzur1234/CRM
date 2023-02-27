@@ -1,0 +1,46 @@
+{% extends 'leads/base.html' %} 
+{% load static %}
+ {% block static %}
+<link rel="stylesheet" href="{% static 'card.css' %}" />
+{% endblock static %}
+
+{% block content %}
+<div class="d-flex justify-content-between">
+  <h1 class="d-flex justify-content-center">Agent Detail</h1>
+
+  <a
+    href="{% url 'agents:agent-list' %}"
+    type="button"
+    class="m-3 btn btn-primary"
+    >Back to agents list</a
+  >
+</div>
+<hr />
+<section class="mx-auto my-2" style="max-width: 21rem">
+  <div class="card testimonial-card mt-2 mb-3">
+    <div class="card-up aqua-gradient"></div>
+    <div class="avatar mx-auto white">
+      <img
+        src="{{agent.image.url}}"
+        class="img-fluid rounded-circle border border-dark border-1 m-3"
+        style="width: 90px"
+      />
+    </div>
+    <div class="card-body text-center">
+        <h4 class="card-title font-weight-bold">{{agent.user.username}}</h4>
+      </a>
+      <hr />
+      <div class="d-flex justify-content-around">
+        <a class="btn btn-primary mt-2 w-20" href="{% url 'agents:agent-update' pk=agent.id %}">Update</a>
+        <a
+          class="btn btn-secondary mt-2 w-20"
+          href="{% url 'agents:delete-agent' pk=agent.id %}"
+          >Delete</a
+          
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

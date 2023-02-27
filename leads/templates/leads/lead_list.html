@@ -1,0 +1,113 @@
+{% extends 'leads/base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %} {% block static %}
+<link rel="stylesheet" href="{% static 'card.css' %}" />
+{% endblock static %} {% block content %}
+<div class="d-flex justify-content-between">
+  <h1 class="d-flex justify-content-center">This is all of our leads</h1>
+  
+    {% if request.user.is_organisor %}
+    <a
+    class="btn btn-primary h-50 "
+    aria-current="page"
+    href="{% url 'leads:lead_create' %}"
+    >Add Lead To My Organisation</a>
+    {% endif %}
+    
+  
+</div>
+
+<hr />
+
+{% for lead in leads %}
+
+<section class="mx-auto my-2" style="max-width: 21rem">
+  <div class="card testimonial-card mt-2 mb-3">
+    <div class="card-up aqua-gradient"></div>
+    <div class="avatar mx-auto white">
+      <img
+        src="{{lead.image.url}}"
+        class="img-fluid rounded-circle border border-dark border-1 m-3"
+        style="width: 90px"
+      />
+    </div>
+    <div class="card-body text-center">
+      <a href="{% url 'leads:lead_detail' pk=lead.id %}">
+        <h4 class="card-title font-weight-bold">
+          {{lead.first_name}} {{lead.last_name}}
+        </h4>
+      </a>
+      <hr>
+      <div class="d-flex justify-content-around">
+      {% if request.user.is_organisor %}
+      
+        <a
+            class="btn btn-primary mt-2 w-20"
+            href="{% url 'leads:lead_update' pk=lead.id %}"
+            >Update</a
+          >
+          <a
+            class="btn btn-secondary mt-2 w-20"
+            href="{% url 'leads:lead_delete' pk=lead.id %}"
+            >Delete</a
+          >
+        
+      {% endif %}
+        
+      </div>
+    </div>
+  </div>
+</section>
+<hr>
+
+{% endfor %}
+
+{% if unassigned_leads.exists %}
+  <h1>Unassigned Leads</h1>
+    {% for lead in unassigned_leads  %}
+        <section class="mx-auto my-2" style="max-width: 21rem">
+          <div class="card testimonial-card mt-2 mb-3">
+            <div class="card-up aqua-gradient"></div>
+            <div class="avatar mx-auto white">
+              <img
+                src="{{lead.image.url}}"
+                class="img-fluid rounded-circle border border-dark border-1 m-3"
+                style="width: 90px"
+              />
+            </div>
+            <div class="card-body text-center">
+              <a href="{% url 'leads:lead_detail' pk=lead.id %}">
+                <h4 class="card-title font-weight-bold">
+                  {{lead.first_name}} {{lead.last_name}}
+                </h4>
+              </a>
+              <hr />
+              {% if request.user.is_organisor %}
+              <div class="d-flex justify-content-around">
+                <a
+                  class="btn btn-primary mt-2 w-20"
+                  href="{% url 'leads:lead_update' pk=lead.id %}"
+                  >Update</a
+                >
+                <a
+                class="btn btn-primary mt-2 w-20"
+                href="{% url 'leads:assign-agent' pk=lead.id %}"
+                >Assign To Agent</a
+              >
+                <a
+                  class="btn btn-secondary mt-2 w-20"
+                  href="{% url 'leads:lead_delete' pk=lead.id %}"
+                  >Delete</a
+                >
+              {% endif %} 
+              </div>
+            </div>
+          </div>
+        </section>
+    {% endfor %}
+  
+{% endif %}
+
+
+{% endblock %}

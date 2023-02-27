@@ -1,0 +1,65 @@
+{% extends 'leads/base.html' %} 
+{% block content %}
+<h1>Lead Detail</h1>
+
+<div class="container">
+  <section class="mx-auto my-5" style="max-width: 23rem">
+      <div class="card testimonial-card mt-2 mb-3">
+      <div class="card-up aqua-gradient"></div>
+      <div class="avatar mx-auto white">
+          <img
+          src="{{lead.image.url}}"
+          class="img-fluid rounded-circle border border-dark border-1 m-3"
+          style="width: 90px;"
+          alt="woman avatar" />
+         
+      </div>
+      <div class="card-body text-center">
+          <a href="{% url 'leads:lead_detail' pk=lead.id %}">
+          <h4 class="card-title font-weight-bold">
+              {{lead.first_name}} {{lead.last_name}}
+          </h4>
+          </a>
+          <hr>
+
+          <h5>Phone</h5>
+          <p> {{lead.phone}} </p>
+          
+          <h5>Email</h5>
+          <p> {{lead.email}} </p>
+
+          <h5>Age</h5>
+          <p>-{{lead.age}}-</p>
+
+          <h5>Agent</h5>
+          <p>-{{lead.agent}}-</p>
+
+          <h5>Organization</h5>
+          <p>-{{lead.organization}}-</p>
+
+          <h5>Category</h5>
+          <p>{{lead.category}}</p>
+
+      
+          <a
+          class="btn btn-primary mt-2"
+          href="{% url 'leads:lead_update' pk=lead.id %}"
+          >Update</a
+          >
+          <a
+          class="btn btn-secondary mt-2"
+          href="{% url 'leads:lead_delete' pk=lead.id %}"
+          >Delete</a
+          >
+          
+          <a href="{% url 'leads:lead-category-update' pk=lead.id %}"
+          class="btn btn-secondary mt-2"
+          >Set Category</a>
+    
+      </div>
+      </div>
+  </section>
+  </div>
+</ul>
+
+{% endblock %}

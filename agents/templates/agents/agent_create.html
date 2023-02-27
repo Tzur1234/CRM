@@ -1,0 +1,16 @@
+{% extends 'leads/base.html' %} 
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between">
+    <h1>Agent Create</h1>
+  <a class="btn btn-primary m-3" href="{% url 'agents:agent-list' %}">Go back to leads</a>
+</div>
+<hr>
+
+<form action="." method="post">
+  {% csrf_token %} {{form | crispy}}
+  <input type="submit" class="btn btn-primary" />
+</form>
+{% endblock %}
