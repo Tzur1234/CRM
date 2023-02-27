@@ -62,6 +62,10 @@ def set_lead_organization(sender, instance, created, **kwargs):
 post_save.connect(set_lead_organization, sender=Lead)
  
 
+class MyModel(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.TextField(null=True)
 
+    
 
 
