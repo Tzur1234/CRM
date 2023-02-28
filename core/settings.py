@@ -110,16 +110,30 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME':env('DB_NAME'), # the name of the DB
+#         'USER':env("DB_USER"), #Will be use to connect the DB
+#         'PASSWORD':env("DB_PASSWORD"),
+#         'HOST':env("DB_HOST"), # Define if the servre run locally or remote
+#         'PORT':env("DB_PORT"),
+#     }
+# }
+DB
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':env('DB_NAME'), # the name of the DB
-        'USER':env("DB_USER"), #Will be use to connect the DB
-        'PASSWORD':env("DB_PASSWORD"),
-        'HOST':env("DB_HOST"), # Define if the servre run locally or remote
-        'PORT':env("DB_PORT"),
+        'NAME':'defaultdb', # the name of the DB
+        'USER':'doadmin', #Will be use to connect the DB
+        'PASSWORD':'AVNS_sycuYjMz-jXMSQsMKmR',
+        'HOST':'db-postgresql-fra1-93463-do-user-13657417-0.b.db.ondigitalocean.com', # Define if the servre run locally or remote
+        'PORT':'25060',
     }
 }
+
 
 
 
