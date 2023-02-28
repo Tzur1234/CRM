@@ -113,11 +113,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':env('DB_NAME'), # the name of the DB
-        'USER':env("DB_USER"), #Will be use to connect the DB
-        'PASSWORD':env("DB_PASSWORD"),
-        'HOST':env("DB_HOST"), # Define if the servre run locally or remote
-        'PORT':env("DB_PORT"),
+        'DB_NAME':env('DB_NAME'), # the name of the DB
+        'DB_USER':env("DB_USER"), #Will be use to connect the DB
+        'DB_PASSWORD':env("DB_PASSWORD"),
+        'DB_HOST':env("DB_HOST"), # Define if the servre run locally or remote
+        'DB_PORT':env("DB_PORT"),
     }
 }
 
