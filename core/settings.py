@@ -36,15 +36,13 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
-
 
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",
+    # "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -115,11 +113,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':'djcrm2', # the name of the DB
-        'USER':'djcrmuser2', #Will be use to connect the DB
-        'PASSWORD':'1234',
-        'HOST':'localhost', # Define if the servre run locally or remote
-        'PORT':'5432',
+        'NAME':env('DB_NAME'), # the name of the DB
+        'USER':env("DB_USER"), #Will be use to connect the DB
+        'PASSWORD':env("DB_PASSWORD"),
+        'HOST':env("DB_HOST"), # Define if the servre run locally or remote
+        'PORT':env("DB_PORT"),
     }
 }
 
