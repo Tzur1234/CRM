@@ -118,6 +118,7 @@ DATABASES = {
         'DB_PASSWORD':env("DB_PASSWORD"),
         'DB_HOST':env("DB_HOST"), # Define if the servre run locally or remote
         'DB_PORT':env("DB_PORT"),
+        'OPTIONS': {'sslmode': 'require'},
     }
 }
 
