@@ -99,16 +99,8 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('DB_NAME'),
-#         'USER': env("DB_USER"),
-#         'PASSWORD': env("DB_PASSWORD"),
-#         'HOST': env("DB_HOST"),
-#         'PORT': env("DB_PORT"),
-#     }
-# }
+
+
 
 # DATABASES = {
 #     'default': {
@@ -120,19 +112,33 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #         'PORT':env("DB_PORT"),
 #     }
 # }
-DB
 
+DB_NAME = env('DB_NAME')
+DB_USER = env("DB_USER")
+DB_PASSWORD = env("DB_PASSWORD")
+DB_HOST = env("DB_HOST")
+DB_PORT = env("DB_PORT")
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':'defaultdb', # the name of the DB
-        'USER':'doadmin', #Will be use to connect the DB
-        'PASSWORD':'AVNS_sycuYjMz-jXMSQsMKmR',
-        'HOST':'db-postgresql-fra1-93463-do-user-13657417-0.b.db.ondigitalocean.com', # Define if the servre run locally or remote
-        'PORT':'25060',
+POSTGRES_READY = (
+    DB_NAME is not None
+    and DB_USER is not None
+    and DB_PASSWORD is not None
+    and DB_HOST is not None
+    and DB_PORT is not None
+
+)
+
+if POSTGRES_READY:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME':DB_NAME, # the name of the DB
+            'USER':DB_USER, #Will be use to connect the DB
+            'PASSWORD':DB_PASSWORD,
+            'HOST':DB_HOST, # Define if the servre run locally or remote
+            'PORT':DB_PORT,
+        }
     }
-}
 
 
 
