@@ -54,7 +54,16 @@
               <a class="nav-link activate" aria-current="page" href="{% url 'logout' %}">Logout</a>
             </li>
             <li class="nav-item p-2" style="color:white">
-              You are login as : {{request.user.username}}        
+              Username : {{request.user.username}}        
+            </li>
+            <li class="nav-item p-2" style="color:white">
+              Organizor Status: {{request.user.is_organisor}}        
+            </li>
+            <li class="nav-item p-2" style="color:white">
+              Agent Status: {{request.user.is_agent}}        
+            </li>
+            <li class="nav-item p-2" style="color:white">
+              {{request.user.userprofile}}        
             </li>
         {% else %}
             <li class="nav-item ">

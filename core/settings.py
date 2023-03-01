@@ -140,7 +140,7 @@ if POSTGRES_READY:
             'PASSWORD':DB_PASSWORD,
             'HOST':DB_HOST, # Define if the servre run locally or remote
             'PORT':DB_PORT,
-            'OPTIONS': {'sslmode': 'require'},
+            # 'OPTIONS': {'sslmode': 'require'},
         }
     }
 
@@ -203,7 +203,7 @@ MEDIA_ROOT = 'media'
 
 
 AUTH_USER_MODEL = 'leads.User'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = "/leads/"
 LOGOUT_REDIRECT_URL = "/login"
 LOGIN_URL = '/login'
@@ -223,3 +223,15 @@ if not DEBUG:
     X_FRAME_OPTIONS = "DENY"
 
     ALLOWED_HOSTS = ["*"]
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_HOST_USER= env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD") 
+EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+EMAIL_PORT = env("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+
+
+   
