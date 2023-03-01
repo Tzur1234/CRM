@@ -37,11 +37,13 @@ class CreateAgentView(OrganisorAndLoginRequiredMixin,CreateView):
             organization=self.request.user.userprofile
         )
 
+        print(user.email)
+
         # Send an emial to the agent 
         send_mail(
         'You are invited to be an angent',
-        'You were added as an angent to the CRM system. Please come login to start working',
-        'from@example.com',
+        f'You were added as an angent to the CRM system. Please come login, reset your password and to start working',
+        'noreply@crmsys.com',
         [f'{user.email}'],
         fail_silently=False,
         )
@@ -75,9 +77,13 @@ class DetailAgentView(OrganisorAndLoginRequiredMixin, DetailView):
 class UpdateAgentView(OrganisorAndLoginRequiredMixin, UpdateView):
     template_name = 'agents/agent_update.html'
     form_class = AgentModelForm
-    model = User
+    # model = Agent
 
     def get_success_url(self):
         return reverse('agents:agent-list')
+    
+    def get_queryset(self):
+        organization = self.request.user.userprofile
+        return Agent.objects.filter(organization=organization)
 
     

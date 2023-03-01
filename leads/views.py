@@ -37,7 +37,8 @@ class ListPageView(LoginRequiredMixin, ListView):
             quertset =  Lead.objects.filter(organization=user.userprofile, agent__isnull=False) 
         else:
             quertset =  Lead.objects.filter(organization=user.agent.organization)    
-            quertset = quertset.filter(agent__user=user,agent__isnull=False)  
+            quertset = quertset.filter(agent__user=user,agent__isnull=False)
+        
         return quertset
 
     def get_context_data(self, **kwargs):
