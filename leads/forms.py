@@ -37,13 +37,6 @@ class LeadForm(forms.ModelForm):
         exclude = ('organization',)
         # fields = '__all__'
 
-    # pass extra information to the form 
-    # def __init__(self, *args, **kwargs):    
-    #     request = kwargs.pop("request")  
-    #     organization = UserProfile.objects.filter(organization=request.user.userprofile)
-    #     super(LeadForm, self).__init__(*args, **kwargs)
-    #     self.fields["organization"].queryset = organization
-
 
 class UserCreationFormCustom(UserCreationForm):
     class Meta:
@@ -76,6 +69,11 @@ class LeadCategoryForm(forms.ModelForm):
         super(LeadCategoryForm, self).__init__(*args, **kwargs)
         self.fields["category"].queryset = categories
     
+
+class CreateCategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ("name",)
 
 
 

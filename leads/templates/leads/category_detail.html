@@ -7,7 +7,14 @@
 <p>All the leads which are {{category.name}}</p>
 <hr />
 
-<a href="{% url 'leads:category-list' %}" class="btn btn-primary w-100 mb-4">All Categories</a>
+<div class="d-flex justify-content-between ">
+  {% if request.user.is_organisor %}
+  <a href="{% url 'leads:delete-the-category'  pk=category.id%}" class="btn btn-danger m-1">Delete {{category.name}}</a>
+  <a href="{% url 'leads:update-the-category'  pk=category.id%}" class="btn btn-primary m-1">Update {{category.name}}</a>
+  <a href="{% url 'leads:category-list' %}" class="btn btn-secondary m-1">Back To All Categories</a>
+  {% endif %}
+</div>
+
 
 <section class="intro">
   <div class="gradient-custom-2 h-100">

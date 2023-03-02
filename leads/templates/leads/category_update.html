@@ -1,0 +1,14 @@
+{% extends 'leads/base.html' %} 
+{% load crispy_forms_tags %}
+
+{% block content %}
+<a href="{% url 'leads:category-list' %}">Go back to all Categories</a>
+<h1>Update {{object.name }}</h1>
+    <div class="w-60">
+        <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }} 
+            <input type="submit">
+        </form>
+    </div>
+{% endblock %}

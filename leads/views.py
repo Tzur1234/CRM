@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.conf import settings
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from .models import Lead, Agent, User, UserProfile, Category
@@ -7,7 +8,8 @@ from .forms import(
     LeadCategoryForm,
     LeadModelForm,
      UserCreationFormCustom,
-     AssignAgentForm)   
+     AssignAgentForm,
+     CreateCategoryForm)   
 
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 
@@ -24,7 +26,7 @@ class SignupView(CreateView):
         return reverse('login')
 
 class LandingPageView(LoginRequiredMixin, TemplateView):
-    template_name = 'leads/landing_page.html'
+    template_name = 'leads/landing_page2.html'
 
 class ListPageView(LoginRequiredMixin, ListView):
     template_name = 'leads/lead_list.html'
@@ -233,6 +235,66 @@ class LeadCategoryUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('leads:lead_detail', args=[self.get_object().id])
 
 
+# Orgenizor will be able to create new category:
+#  - name
+class CategoryCreateView(OrganisorAndLoginRequiredMixin, CreateView):
+#  - organization - will be set auotmatically
+    template_name='leads/category_create.html'
+    form_class = CreateCategoryForm
+    #  Add the link to this view in the navbcar and category list only availabel for the user.is_organisor
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        category.organization = self.request.user.userprofile 
+        category.save()
+
+        return super(CategoryCreateView, self).form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('leads:category-list')
+
+
+class UpdateTheCategoryView(OrganisorAndLoginRequiredMixin, UpdateView):
+    template_name='leads/category_update.html'
+    form_class = CreateCategoryForm
+
+    def get_queryset(self):
+        queryset = Category.objects.filter(organization = self.request.user.userprofile)
+        return queryset
+
+    def get_success_url(self):
+        return reverse('leads:category-list')
+    
+
+class DeleteTheCategoryView(OrganisorAndLoginRequiredMixin, DeleteView):
+
+
+    model = Category   
+    # url to redirect after successfully
+    def get_success_url(self):
+        return reverse('leads:category-list')    
+    
+    def get_queryset(self):       
+        user = self.request.user
+        return Category.objects.filter(organization=user.userprofile)  
+
+
+def contact(request):
+    if request.method == 'POST':
+        
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        #send email Back
+        send_mail(
+        f'Hello {name}',
+        f'We have received your message, thanks alot!',
+        'settings.EMAIL_HOST_USER',
+        [email, 'tzur09@gmail.com'],
+        fail_silently=False,
+        )
+        return render(request, 'leads/landing_page2.html')
 
 
 

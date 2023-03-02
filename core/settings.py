@@ -100,49 +100,43 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME':env('DB_NAME'), # the name of the DB
-#         'USER':env("DB_USER"), #Will be use to connect the DB
-#         'PASSWORD':env("DB_PASSWORD"),
-#         'HOST':env("DB_HOST"), # Define if the servre run locally or remote
-#         'PORT':env("DB_PORT"),
-#     }
-# }
-
-DB_NAME = env('DB_NAME')
-DB_USER = env("DB_USER")
-DB_PASSWORD = env("DB_PASSWORD")
-DB_HOST = env("DB_HOST")
-DB_PORT = env("DB_PORT")
-
-
-POSTGRES_READY = (
-    DB_NAME is not None
-    and DB_USER is not None
-    and DB_PASSWORD is not None
-    and DB_HOST is not None
-    and DB_PORT is not None
-
-
-)
-
-if POSTGRES_READY:
-    print()
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME':DB_NAME, # the name of the DB
-            'USER':DB_USER, #Will be use to connect the DB
-            'PASSWORD':DB_PASSWORD,
-            'HOST':DB_HOST, # Define if the servre run locally or remote
-            'PORT':DB_PORT,
-            # 'OPTIONS': {'sslmode': 'require'},
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+
+
+# DB_NAME = env('DB_NAME')
+# DB_USER = env("DB_USER")
+# DB_PASSWORD = env("DB_PASSWORD")
+# DB_HOST = env("DB_HOST")
+# DB_PORT = env("DB_PORT")
+
+
+# POSTGRES_READY = (
+#     DB_NAME is not None
+#     and DB_USER is not None
+#     and DB_PASSWORD is not None
+#     and DB_HOST is not None
+#     and DB_PORT is not None
+# )
+
+# if POSTGRES_READY:
+#     print()
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME':DB_NAME, # the name of the DB
+#             'USER':DB_USER, #Will be use to connect the DB
+#             'PASSWORD':DB_PASSWORD,
+#             'HOST':DB_HOST, # Define if the servre run locally or remote
+#             'PORT':DB_PORT,
+#             # 'OPTIONS': {'sslmode': 'require'},
+#         }
+#     }
 
 
 
@@ -203,9 +197,8 @@ MEDIA_ROOT = 'media'
 
 
 AUTH_USER_MODEL = 'leads.User'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-LOGIN_REDIRECT_URL = "/leads/"
-LOGOUT_REDIRECT_URL = "/login"
+LOGIN_REDIRECT_URL = "/landing_page2/"
+LOGOUT_REDIRECT_URL = "/landing_page2/"
 LOGIN_URL = '/login'
 
 
@@ -225,13 +218,27 @@ if not DEBUG:
     ALLOWED_HOSTS = ["*"]
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_HOST_USER= env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD") 
-EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-EMAIL_PORT = env("EMAIL_PORT")
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+    EMAIL_HOST = 'localhost'
+    EMAIL_HOST_USER= ''
+    EMAIL_HOST_PASSWORD = ''
+    EMAIL_USE_TLS = False
+    EMAIL_PORT = '1025'
+
+else:
+    EMAIL_BACKEND = env("EMAIL_BACKEND")
+
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_HOST_USER= env("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD") 
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = env("EMAIL_PORT")
+
+
+    
+
 
 
    
