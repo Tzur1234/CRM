@@ -2,8 +2,15 @@
 <link rel="stylesheet" href="{% static table.css %}" />
 {% endblock static %} {% block content %}
 <h1>Categories</h1>
-<p>This categories segment the leads</p>
+<div class="d-flex justify-content-between">
+  <p>This categories segment the leads</p>
+  {% if request.user.is_organisor %}
+  <a class="btn btn-primary " href="{% url 'leads:lead-category-create' %}"> Create New Category</a>
+  {% endif %}
+</div>
 <hr />
+
+
 
 <section class="intro">
   <div class="gradient-custom-2 h-100">
@@ -32,6 +39,12 @@
                             </th>
                             <td>{{category.lead_set.count}}</td>
                         </tr>
+
+                        {%empty%}
+                          <div class="alert alert-warning" role="alert">
+                            No categories set yet
+                          </div>
+
                     {% endfor %}
                   
                 </tbody>
